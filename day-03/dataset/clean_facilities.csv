@@ -1,0 +1,13 @@
+facility_id,facility_name,location,cleanliness_score,odor_score,waste_level,complaints,footfall,hours_since_cleaning
+1,Central Mall,Nagpur,8,2,Low,3,1200,4
+2,City Hospital,Nagpur,6,4,Medium,8,900,7
+3,Tech Park,Pune,9,1,Low,2,1500,3
+4,Railway Station,Nagpur,5,5,High,15,3000,10
+5,College Campus,Pune,7,3,Medium,6,1800,6
+6,Community Hall,Nashik,8,2,Low,3,500,5
+7,Bus Terminal,Nagpur,5,5,High,18,2500,11
+8,IT Office,Pune,9,1,Low,1,700,2
+9,Market Area,Nashik,6,4,High,12,2200,9
+10,Sports Complex,Pune,8,2,Medium,4,1000,5
+11,City Hospital,Nagpur,6,4,Medium,8,900,7
+12,College Campus,Pune,7,3,Medium,6,1800,6
