@@ -38,10 +38,15 @@ def risk_level(score):
 
 df["risk_level"] = df["risk_score"].apply(risk_level)
 
+
+print("===== Facility Risk Analysis =====")
+
 print(
     df[
         [
-            "facility_name",
+            "facility_id",
+            "location",
+            "facility_type",
             "risk_score",
             "risk_level"
         ]
@@ -52,3 +57,5 @@ df.to_csv(
     "day-03/dataset/facility_risk_analysis.csv",
     index=False
 )
+
+print("\nRisk analysis saved successfully.")
