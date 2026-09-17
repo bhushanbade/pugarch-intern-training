@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("day-03/dataset/facilities.csv")
+df = pd.read_csv("day-03/dataset/facilities_day3_updated.csv")
 
 print("First five rows:")
 print(df.head())
