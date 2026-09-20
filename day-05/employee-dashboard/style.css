@@ -1,0 +1,117 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    color: #222;
+}
+
+header {
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    color: white;
+    padding: 30px 7%;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+header p {
+    margin-bottom: 0;
+    opacity: .9;
+}
+
+main {
+    width: 86%;
+    margin: 30px auto;
+}
+
+.controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+input, select, button {
+    padding: 11px 14px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    font-size: 14px;
+}
+
+button {
+    cursor: pointer;
+    background: white;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+.add {
+    background: #2563eb;
+    color: white;
+    border: none;
+}
+
+.card {
+    background: white;
+    padding: 22px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px #00000012;
+}
+
+.card h3 {
+    margin-top: 0;
+}
+
+.card p {
+    color: #555;
+}
+
+.actions button {
+    margin-right: 7px;
+}
+
+.view {
+    background: #e0f2fe;
+}
+
+.edit {
+    background: #fef3c7;
+}
+
+.delete {
+    background: #fee2e2;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0008;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-box {
+    background: white;
+    padding: 25px;
+    width: 350px;
+    border-radius: 12px;
+}
+
+.modal-box input {
+    width: 100%;
+    margin: 7px 0;
+}
+
+.modal-box button {
+    margin-top: 10px;
+}

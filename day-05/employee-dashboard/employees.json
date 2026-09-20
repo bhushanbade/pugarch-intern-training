@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "name": "Sneha Kulkarni",
+        "department": "IT",
+        "experience": 5,
+        "email": "sneha@example.com"
+    },
+    {
+        "id": 2,
+        "name": "Amit Joshi",
+        "department": "Finance",
+        "experience": 8,
+        "email": "amit@example.com"
+    },
+    {
+        "id": 3,
+        "name": "Rahul Sharma",
+        "department": "IT",
+        "experience": 3,
+        "email": "rahul@example.com"
+    },
+    {
+        "id": 4,
+        "name": "Priya Patil",
+        "department": "HR",
+        "experience": 6,
+        "email": "priya@example.com"
+    },
+    {
+        "id": 5,
+        "name": "Rohan Deshmukh",
+        "department": "Marketing",
+        "experience": 4,
+        "email": "rohan@example.com"
+    }
+]

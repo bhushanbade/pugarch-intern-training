@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Employee Dashboard</h1>
+    <p>Manage employee information easily</p>
+</header>
+
+<main>
+    <section class="controls">
+        <input id="search" placeholder="Search employee...">
+
+        <select id="department">
+            <option value="">All Departments</option>
+            <option>IT</option>
+            <option>Finance</option>
+            <option>HR</option>
+            <option>Marketing</option>
+        </select>
+
+        <button onclick="sortEmployees()">Sort by Experience</button>
+        <button class="add" onclick="openForm()">+ Add Employee</button>
+    </section>
+
+    <div id="employees"></div>
+</main>
+
+<div id="modal" class="modal">
+    <div class="modal-box">
+        <h2 id="formTitle">Add Employee</h2>
+
+        <input id="name" placeholder="Name">
+        <input id="dept" placeholder="Department">
+        <input id="experience" type="number" placeholder="Experience (years)">
+        <input id="email" placeholder="Email">
+
+        <button onclick="saveEmployee()">Save</button>
+        <button onclick="closeForm()">Cancel</button>
+    </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
