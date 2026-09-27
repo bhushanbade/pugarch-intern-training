@@ -1,0 +1,16 @@
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 39px; padding: 0 14px; border: 0; border-radius: 8px; font-size: 11px; font-weight: 700; }
+.button-primary { color: #fff; background: var(--brand); }
+.success-banner { display: flex; align-items: center; gap: 8px; margin: -8px 0 18px; padding: 12px 15px; color: #067647; background: #ecfdf3; border: 1px solid #abefc6; border-radius: 9px; font-size: 12px; font-weight: 600; }
+.history-panel { overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+.history-intro { padding: 17px 21px; color: var(--muted); border-bottom: 1px solid var(--line); font-size: 11px; }
+.history-intro strong { color: var(--ink); }
+.history-list { padding: 0 21px; }
+.inspection-entry { display: flex; align-items: flex-start; gap: 14px; padding: 18px 0; border-bottom: 1px solid #f0f2f5; }
+.inspection-entry:last-child { border: 0; }
+.rating-badge { display: grid; flex-shrink: 0; width: 36px; height: 36px; place-items: center; color: var(--brand-dark); background: var(--soft-brand); border-radius: 50%; font-size: 13px; font-weight: 700; }
+.entry-main { flex: 1; min-width: 0; }
+.entry-title { font-size: 12px; font-weight: 700; }
+.entry-main p { margin: 5px 0; color: #475467; font-size: 11px; line-height: 1.6; }
+.entry-inspector { color: #98a2b3; font-size: 10px; }
+.inspection-entry time { flex-shrink: 0; color: var(--muted); font-size: 10px; }
+@media (max-width: 520px) { .inspection-entry { gap: 10px; } .inspection-entry time { font-size: 9px; } }

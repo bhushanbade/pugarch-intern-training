@@ -1,0 +1,14 @@
+<section class="state-card" [class.error]="kind === 'error'" [attr.aria-live]="kind === 'error' ? 'assertive' : 'polite'">
+  @if (kind === 'loading') {
+    <span class="spinner" aria-hidden="true"></span>
+  } @else if (kind === 'error') {
+    <span class="state-icon" aria-hidden="true">!</span>
+  } @else {
+    <span class="state-icon" aria-hidden="true">⌕</span>
+  }
+  <h2>{{ title }}</h2>
+  <p>{{ message }}</p>
+  @if (retryable) {
+    <button class="button button-secondary" type="button" (click)="retry.emit()">Try again</button>
+  }
+</section>

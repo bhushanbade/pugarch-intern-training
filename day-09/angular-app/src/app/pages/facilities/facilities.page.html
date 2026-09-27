@@ -1,0 +1,79 @@
+<app-page-header title="Facilities" subtitle="Browse sites, monitor condition and open a facility record.">
+  <a class="button button-primary" routerLink="/inspections/new"><span aria-hidden="true">＋</span> New inspection</a>
+</app-page-header>
+
+@if (loading) {
+  <app-state-message title="Loading facilities" message="Retrieving facility records from the Day 8 API." />
+} @else if (errorMessage) {
+  <app-state-message
+    kind="error"
+    title="Facilities could not be loaded"
+    [message]="errorMessage"
+    [retryable]="true"
+    (retry)="loadFacilities()"
+  />
+} @else {
+  <section class="facility-panel">
+    <div class="toolbar">
+      <label class="search-field">
+        <span aria-hidden="true">⌕</span>
+        <input type="search" name="search" [(ngModel)]="searchTerm" placeholder="Search facilities..." aria-label="Search facilities">
+      </label>
+      <label class="filter-field">
+        <span>Category</span>
+        <select name="category" [(ngModel)]="categoryFilter">
+          <option value="">All categories</option>
+          @for (category of categories; track category) { <option [value]="category">{{ category }}</option> }
+        </select>
+      </label>
+      <label class="filter-field">
+        <span>Status</span>
+        <select name="operational" [(ngModel)]="operationalFilter">
+          <option value="all">All statuses</option>
+          <option value="operational">Operational</option>
+          <option value="offline">Needs attention</option>
+        </select>
+      </label>
+      <label class="filter-field">
+        <span>Sort by</span>
+        <select name="sort" [(ngModel)]="sortBy">
+          <option value="name">Name A–Z</option>
+          <option value="condition-low">Lowest condition</option>
+          <option value="condition-high">Highest condition</option>
+        </select>
+      </label>
+    </div>
+    <div class="result-count">{{ visibleFacilities.length }} {{ visibleFacilities.length === 1 ? 'facility' : 'facilities' }}</div>
+    @if (visibleFacilities.length) {
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Facility</th><th>Category</th><th>Condition</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            @for (facility of visibleFacilities; track facility.id) {
+              <tr>
+                <td>
+                  <a class="facility-name" [routerLink]="['/facilities', facility.id]">{{ facility.name }}</a>
+                  <span class="facility-location">{{ facility.location }}</span>
+                </td>
+                <td><span class="category-tag">{{ facility.category }}</span></td>
+                <td>
+                  <span class="condition-score">{{ facility.condition_score }}<small> / 5</small></span>
+                  <span class="condition-label">{{ facility.condition_score | conditionLabel }}</span>
+                </td>
+                <td><span class="status-pill" [appOperationalStatus]="facility.is_operational">{{ facility.is_operational ? 'Operational' : 'Offline' }}</span></td>
+                <td><a class="details-link" [routerLink]="['/facilities', facility.id]">Details <span aria-hidden="true">→</span></a></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div class="empty-filter">
+        <span aria-hidden="true">⌕</span>
+        <strong>No facilities match these filters</strong>
+        <p>Try changing the search or filters to see more results.</p>
+        <button class="button button-secondary" type="button" (click)="searchTerm = ''; categoryFilter = ''; operationalFilter = 'all'">Clear filters</button>
+      </div>
+    }
+  </section>
+}

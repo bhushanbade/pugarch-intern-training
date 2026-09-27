@@ -1,0 +1,48 @@
+<app-page-header title="Facility details" subtitle="Condition, service status and related inspection records.">
+  <a class="button button-secondary" routerLink="/facilities">← All facilities</a>
+</app-page-header>
+
+@if (loading) {
+  <app-state-message title="Loading facility" message="Fetching facility details and inspection history." />
+} @else if (errorMessage || !facility) {
+  <app-state-message
+    kind="error"
+    title="Facility details are unavailable"
+    [message]="errorMessage || 'This facility could not be found.'"
+    [retryable]="!!facility"
+    (retry)="loadFacility(facility!.id)"
+  />
+} @else {
+  <section class="detail-grid">
+    <article class="panel facility-card">
+      <div class="facility-title">
+        <div class="facility-icon" aria-hidden="true">▦</div>
+        <div><h2>{{ facility.name }}</h2><p>{{ facility.category }} · {{ facility.location }}</p></div>
+      </div>
+      <span class="status-pill" [appOperationalStatus]="facility.is_operational">{{ facility.is_operational ? 'Operational' : 'Offline' }}</span>
+      <dl class="detail-facts">
+        <div><dt>Department</dt><dd>{{ facility.department?.name || 'Not assigned' }}</dd></div>
+        <div><dt>Condition score</dt><dd>{{ facility.condition_score }} / 5 · {{ facility.condition_score | conditionLabel }}</dd></div>
+        <div><dt>Last updated</dt><dd>{{ facility.updated_at | date:'mediumDate' }}</dd></div>
+      </dl>
+      @if (facility.notes) { <div class="notes"><strong>Facility notes</strong><p>{{ facility.notes }}</p></div> }
+      <a class="button button-primary" routerLink="/inspections/new">Record an inspection</a>
+    </article>
+
+    <article class="panel history-card">
+      <div class="panel-heading"><div><h2>Inspection history</h2><p>{{ inspections.length }} {{ inspections.length === 1 ? 'record' : 'records' }}</p></div></div>
+      @if (inspections.length) {
+        <div class="history-list">
+          @for (inspection of inspections; track inspection.id) {
+            <div class="history-item">
+              <span class="history-rating">{{ inspection.rating }}</span>
+              <div><strong>{{ inspection.rating }} / 5 rating</strong><span>{{ inspection.findings }}</span><small>{{ inspection.inspected_at | date:'mediumDate' }} · {{ inspection.inspector?.name || 'Inspector not recorded' }}</small></div>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="no-history">No inspections have been recorded for this facility yet.</p>
+      }
+    </article>
+  </section>
+}

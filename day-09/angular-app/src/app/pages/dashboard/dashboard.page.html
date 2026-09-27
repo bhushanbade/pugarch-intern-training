@@ -1,0 +1,88 @@
+<app-page-header
+  title="Facility overview"
+  subtitle="Here is the latest overview of your facilities and inspection activity."
+/>
+
+@if (loading) {
+  <app-state-message title="Loading your dashboard" message="Fetching live facility and inspection data from the Day 8 API." />
+} @else if (errorMessage) {
+  <app-state-message
+    kind="error"
+    title="Dashboard data is unavailable"
+    [message]="errorMessage"
+    [retryable]="true"
+    (retry)="loadDashboard()"
+  />
+} @else {
+  <section class="metric-grid" aria-label="Facility metrics">
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-icon green">▦</span><span class="metric-caption">All facilities</span></div>
+      <strong class="metric-value">{{ facilities.length }}</strong>
+      <span class="metric-foot">Across your organization</span>
+    </article>
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-icon blue">✓</span><span class="metric-caption">Inspections logged</span></div>
+      <strong class="metric-value">{{ inspections.length }}</strong>
+      <span class="metric-foot">Average rating {{ averageRating | number:'1.1-1' }} / 5</span>
+    </article>
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-icon amber">⌁</span><span class="metric-caption">Open complaints</span></div>
+      <strong class="metric-value">{{ openComplaints }}</strong>
+      <span class="metric-foot">Open or in progress</span>
+    </article>
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-icon violet">↗</span><span class="metric-caption">Operational</span></div>
+      <strong class="metric-value">{{ operationalCount }}<small> / {{ facilities.length }}</small></strong>
+      <span class="metric-foot">Facilities in service</span>
+    </article>
+  </section>
+
+  <section class="content-grid">
+    <article class="panel recent-panel">
+      <div class="panel-heading">
+        <div><h2>Recent inspections</h2><p>Latest facility checks recorded</p></div>
+        <a class="text-link" routerLink="/inspections">View history <span aria-hidden="true">→</span></a>
+      </div>
+      @if (recentInspections.length) {
+        <div class="inspection-list">
+          @for (inspection of recentInspections; track inspection.id) {
+            <div class="inspection-row">
+              <span class="inspection-check" aria-hidden="true">✓</span>
+              <div class="inspection-description">
+                <a [routerLink]="['/facilities', inspection.facility_id]">{{ inspection.facility.name }}</a>
+                <span>{{ inspection.findings }}</span>
+              </div>
+              <div class="inspection-meta">
+                <span class="rating">{{ inspection.rating }} / 5</span>
+                <time>{{ inspection.inspected_at | date:'MMM d, y' }}</time>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="inline-empty">No inspections have been recorded yet.</p>
+      }
+    </article>
+
+    <article class="panel health-panel">
+      <div class="panel-heading"><div><h2>Facility health</h2><p>Condition score from latest facility record</p></div></div>
+      @if (facilities.length) {
+        <div class="health-list">
+          @for (facility of facilities.slice(0, 5); track facility.id) {
+            <div class="health-item">
+              <div class="health-copy">
+                <a [routerLink]="['/facilities', facility.id]">{{ facility.name }}</a>
+                <span>{{ facility.condition_score | conditionLabel }}</span>
+              </div>
+              <div class="health-bar" role="img" [attr.aria-label]="'Condition score ' + facility.condition_score + ' out of 5'">
+                <span [style.width.%]="facility.condition_score * 20"></span>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="inline-empty">Facilities will appear here once added to the API.</p>
+      }
+    </article>
+  </section>
+}

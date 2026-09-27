@@ -1,0 +1,44 @@
+<div class="app-shell">
+  <header class="topbar">
+    <a class="brand" routerLink="/" aria-label="Facility Desk home">
+      <span class="brand-mark">FD</span>
+      <span class="brand-copy">
+        <strong>Facility Desk</strong>
+        <span>Inspection operations</span>
+      </span>
+    </a>
+    <div class="topbar-meta">
+      <span class="api-indicator">Connected to facilities API</span>
+      <span class="avatar" aria-label="Inspection team">IT</span>
+    </div>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <p class="nav-label">Workspace</p>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <span class="nav-icon" aria-hidden="true">⌂</span> Dashboard
+        </a>
+        <a class="nav-link" routerLink="/facilities" routerLinkActive="active">
+          <span class="nav-icon" aria-hidden="true">▦</span> Facilities
+        </a>
+        <a class="nav-link" routerLink="/inspections" routerLinkActive="active">
+          <span class="nav-icon" aria-hidden="true">✓</span> Inspections
+        </a>
+      </nav>
+      <p class="nav-label">Quick action</p>
+      <nav class="nav-links" aria-label="Quick actions">
+        <a class="nav-link" routerLink="/inspections/new" routerLinkActive="active">
+          <span class="nav-icon" aria-hidden="true">＋</span> New inspection
+        </a>
+      </nav>
+      <div class="sidebar-note">
+        <strong>Keep every space ready</strong>
+        Review facility health and record inspection findings in one place.
+      </div>
+    </aside>
+    <main>
+      <router-outlet />
+    </main>
+  </div>
+</div>

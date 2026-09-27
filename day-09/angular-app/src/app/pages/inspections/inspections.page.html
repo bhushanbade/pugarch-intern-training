@@ -1,0 +1,41 @@
+<app-page-header title="Inspection history" subtitle="A complete timeline of facility checks and recorded findings.">
+  <a class="button button-primary" routerLink="/inspections/new"><span aria-hidden="true">＋</span> New inspection</a>
+</app-page-header>
+
+@if (showCreatedMessage) {
+  <div class="success-banner" role="status"><span aria-hidden="true">✓</span> Inspection recorded successfully.</div>
+}
+@if (loading) {
+  <app-state-message title="Loading inspection history" message="Retrieving inspection records from the Day 8 API." />
+} @else if (errorMessage) {
+  <app-state-message
+    kind="error"
+    title="Inspection history could not be loaded"
+    [message]="errorMessage"
+    [retryable]="true"
+    (retry)="loadInspections()"
+  />
+} @else if (inspections.length) {
+  <section class="history-panel">
+    <div class="history-intro"><strong>{{ inspections.length }}</strong> inspection {{ inspections.length === 1 ? 'record' : 'records' }}</div>
+    <div class="history-list">
+      @for (inspection of inspections; track inspection.id) {
+        <article class="inspection-entry">
+          <span class="rating-badge">{{ inspection.rating }}</span>
+          <div class="entry-main">
+            <a class="entry-title" [routerLink]="['/facilities', inspection.facility_id]">{{ inspection.facility.name }}</a>
+            <p>{{ inspection.findings }}</p>
+            <span class="entry-inspector">{{ inspection.inspector?.name || 'Inspector not recorded' }}</span>
+          </div>
+          <time>{{ inspection.inspected_at | date:'mediumDate' }}</time>
+        </article>
+      }
+    </div>
+  </section>
+} @else {
+  <app-state-message
+    kind="empty"
+    title="No inspections yet"
+    message="Create the first inspection to start building a maintenance history for your facilities."
+  />
+}

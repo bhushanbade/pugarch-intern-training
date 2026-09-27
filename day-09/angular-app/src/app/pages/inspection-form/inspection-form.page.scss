@@ -1,0 +1,27 @@
+.form-card { max-width: 800px; padding: 25px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+.form-heading { display: flex; align-items: center; gap: 12px; padding-bottom: 19px; border-bottom: 1px solid var(--line); }
+.form-icon { display: grid; width: 40px; height: 40px; place-items: center; color: var(--brand); background: var(--soft-brand); border-radius: 11px; font-weight: 700; }
+.form-heading h2 { margin: 0; font: 800 15px 'Segoe UI', sans-serif; }
+.form-heading p { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding: 22px 0; }
+.form-field { display: grid; align-content: start; gap: 7px; color: #344054; font-size: 11px; font-weight: 700; }
+.form-field b { color: #d92d20; }
+.full-width { grid-column: 1 / -1; }
+.form-field input, .form-field select, .form-field textarea { width: 100%; color: var(--ink); background: #fff; border: 1px solid #d0d5dd; border-radius: 8px; outline: 0; font-size: 12px; }
+.form-field input, .form-field select { height: 42px; padding: 0 11px; }
+.form-field textarea { min-height: 125px; padding: 11px; resize: vertical; line-height: 1.6; }
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: #63a799; box-shadow: 0 0 0 3px rgb(33 110 99 / 10%); }
+.form-field .invalid { border-color: #f04438; }
+.field-hint, .field-error { font-size: 10px; font-weight: 400; line-height: 1.5; }
+.field-hint { color: #98a2b3; }
+.field-error { color: #b42318; }
+.form-alert { margin-top: 18px; padding: 12px 14px; color: #b42318; background: #fef3f2; border: 1px solid #fecdca; border-radius: 8px; font-size: 11px; line-height: 1.5; }
+.form-footer { display: flex; justify-content: flex-end; gap: 10px; padding-top: 17px; border-top: 1px solid var(--line); }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 0 15px; border: 0; border-radius: 8px; font-size: 11px; font-weight: 700; }
+.button-primary { color: #fff; background: var(--brand); }
+.button-primary:hover:not(:disabled) { background: var(--brand-dark); }
+.button-primary:disabled { cursor: wait; opacity: .7; }
+.button-secondary { color: var(--brand-dark); background: var(--soft-brand); }
+.button-spinner { width: 13px; height: 13px; border: 2px solid rgb(255 255 255 / 50%); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 600px) { .form-card { padding: 19px; } .form-grid { grid-template-columns: 1fr; } .full-width { grid-column: auto; } }

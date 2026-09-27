@@ -1,0 +1,76 @@
+<app-page-header title="New inspection" subtitle="Record a facility condition check and document your findings.">
+  <a class="button button-secondary" routerLink="/inspections">Cancel</a>
+</app-page-header>
+
+@if (facilitiesLoading) {
+  <app-state-message title="Loading facilities" message="Facility records are required before an inspection can be created." />
+} @else if (loadingError) {
+  <app-state-message
+    kind="error"
+    title="Facilities could not be loaded"
+    [message]="loadingError"
+  />
+} @else if (!facilities.length) {
+  <app-state-message
+    kind="empty"
+    title="Add a facility first"
+    message="The Day 8 API has no facilities yet. Add one before creating an inspection."
+  />
+} @else {
+  <form class="form-card" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="form-heading"><span class="form-icon" aria-hidden="true">✓</span><div><h2>Inspection details</h2><p>Fields marked with an asterisk are required.</p></div></div>
+    @if (saveError) { <div class="form-alert" role="alert">{{ saveError }}</div> }
+
+    <div class="form-grid">
+      <label class="form-field full-width">
+        <span>Facility <b>*</b></span>
+        <select formControlName="facility_id" [class.invalid]="showError(form.controls.facility_id)" aria-describedby="facility-error">
+          <option [ngValue]="0" disabled>Select a facility</option>
+          @for (facility of facilities; track facility.id) {
+            <option [ngValue]="facility.id">{{ facility.name }} · {{ facility.location }}</option>
+          }
+        </select>
+        @if (showError(form.controls.facility_id)) { <small id="facility-error" class="field-error">Choose a facility for this inspection.</small> }
+      </label>
+
+      <label class="form-field">
+        <span>Inspection date <b>*</b></span>
+        <input type="date" formControlName="inspected_at" [class.invalid]="showError(form.controls.inspected_at)" aria-describedby="date-error">
+        @if (showError(form.controls.inspected_at)) { <small id="date-error" class="field-error">Enter the date of the inspection.</small> }
+      </label>
+
+      <label class="form-field">
+        <span>Condition rating <b>*</b></span>
+        <select formControlName="rating" [class.invalid]="showError(form.controls.rating)" aria-describedby="rating-help rating-error">
+          <option [ngValue]="0" disabled>Select a rating</option>
+          <option [ngValue]="5">5 · Excellent</option>
+          <option [ngValue]="4">4 · Good</option>
+          <option [ngValue]="3">3 · Fair</option>
+          <option [ngValue]="2">2 · Needs attention</option>
+          <option [ngValue]="1">1 · Critical</option>
+        </select>
+        <small id="rating-help" class="field-hint">Rate the facility from 1 (critical) to 5 (excellent).</small>
+        @if (showError(form.controls.rating)) { <small id="rating-error" class="field-error">Choose a rating from 1 to 5.</small> }
+      </label>
+
+      <label class="form-field full-width">
+        <span>Findings <b>*</b></span>
+        <textarea rows="5" maxlength="16000" formControlName="findings" placeholder="Describe the areas inspected, issues found, and any follow-up needed..." [class.invalid]="showError(form.controls.findings)" aria-describedby="findings-hint findings-error"></textarea>
+        <small id="findings-hint" class="field-hint">Be specific so teams can act on your findings. Maximum 16,000 characters.</small>
+        @if (showError(form.controls.findings)) {
+          <small id="findings-error" class="field-error">
+            @if (form.controls.findings.hasError('maxlength')) { Findings must be 16,000 characters or fewer. }
+            @else { Enter findings for this inspection. }
+          </small>
+        }
+      </label>
+    </div>
+
+    <div class="form-footer">
+      <a class="button button-secondary" routerLink="/inspections">Cancel</a>
+      <button class="button button-primary" type="submit" [disabled]="saving">
+        @if (saving) { <span class="button-spinner" aria-hidden="true"></span> Saving... } @else { Save inspection }
+      </button>
+    </div>
+  </form>
+}
