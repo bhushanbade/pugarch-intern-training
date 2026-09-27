@@ -1,0 +1,308 @@
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #e8edf4;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(16 24 40 / 4%);
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: #475467;
+  font-size: 13px;
+  text-align: left;
+}
+
+.table th {
+  height: 48px;
+  border-bottom: 1px solid #e8edf4;
+  background: #f8f8fc;
+  padding: 0 20px;
+  color: #667085;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.25px;
+  white-space: nowrap;
+}
+
+.table td {
+  height: 68px;
+  border-bottom: 1px solid #f0f2f6;
+  padding: 10px 20px;
+  white-space: nowrap;
+}
+
+.numberHeader,
+.employeeNumber {
+  width: 54px;
+  color: #929bb0;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.table tbody tr {
+  transition: background-color 130ms ease;
+}
+
+.table tbody tr:hover {
+  background: #faf9fe;
+}
+
+.employee {
+  display: flex;
+  min-width: 170px;
+  align-items: center;
+  gap: 11px;
+}
+
+.avatar {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid #e1def5;
+  border-radius: 50%;
+  background: #f1effa;
+  color: #5b49b7;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.employeeName {
+  overflow: hidden;
+  color: #27364b;
+  font-weight: 600;
+  text-overflow: ellipsis;
+}
+
+.department {
+  display: inline-flex;
+  min-height: 25px;
+  align-items: center;
+  border: 1px solid #e5e2f1;
+  border-radius: 999px;
+  background: #f8f7fb;
+  padding: 0 9px;
+  color: #475467;
+  font-size: 11px;
+  font-weight: 550;
+}
+
+.salary {
+  color: #27364b;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.actionsHeader {
+  text-align: right;
+}
+
+.actionsCell {
+  width: 1%;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.actionButton {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: #667085;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 130ms ease, color 130ms ease,
+    border-color 130ms ease;
+}
+
+.actionButton:hover {
+  border-color: #e1dcf5;
+  background: #f2f0fb;
+  color: #5745ad;
+}
+
+.actions .actionButton:nth-child(2) {
+  color: #a7670b;
+}
+
+.actions .actionButton:nth-child(2):hover {
+  border-color: #f5e3c4;
+  background: #fff8eb;
+  color: #955a08;
+}
+
+.deleteButton:hover {
+  border-color: #fee4e2;
+  background: #fff3f2;
+  color: #d92d20;
+}
+
+.actionButton:focus-visible {
+  outline: 2px solid #5b49b7;
+  outline-offset: 2px;
+}
+
+.emptyState {
+  display: grid;
+  min-height: 190px;
+  align-content: center;
+  justify-items: center;
+  border: 1px solid #e8edf4;
+  border-radius: 14px;
+  background: #fff;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgb(16 24 40 / 4%);
+}
+
+.emptyState h2 {
+  margin: 0;
+  color: #344054;
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.emptyState p {
+  margin: 7px 0 0;
+  color: #98a2b3;
+  font-size: 12px;
+}
+
+@media (max-width: 900px) and (min-width: 641px) {
+  .table {
+    min-width: 700px;
+  }
+}
+
+@media (max-width: 640px) {
+  .tableContainer {
+    overflow: visible;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .table,
+  .table tbody {
+    display: block;
+    width: 100%;
+  }
+
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+  }
+
+  .table tbody {
+    display: grid;
+    gap: 10px;
+  }
+
+  .table tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px 8px;
+    border: 1px solid #e8edf4;
+    border-radius: 12px;
+    background: #fff;
+    padding: 14px;
+    box-shadow: 0 2px 8px rgb(16 24 40 / 4%);
+  }
+
+  .table tbody tr:hover {
+    background: #fff;
+  }
+
+  .table td {
+    display: block;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    border: 0;
+    padding: 0;
+    white-space: normal;
+  }
+
+  .table td[data-label="#"] {
+    grid-column: 1 / -1;
+    color: #929bb0;
+    font-size: 11px;
+  }
+
+  .table td[data-label="Name"] {
+    grid-column: 1 / -1;
+  }
+
+  .table td[data-label="Department"],
+  .table td[data-label="Age"],
+  .table td[data-label="Salary"] {
+    display: flex;
+    min-height: 26px;
+    align-items: center;
+    gap: 7px;
+    color: #667085;
+    font-size: 12px;
+  }
+
+  .table td[data-label="Department"]::before,
+  .table td[data-label="Age"]::before,
+  .table td[data-label="Salary"]::before {
+    color: #98a2b3;
+    content: attr(data-label) ":";
+    font-size: 11px;
+  }
+
+  .table td[data-label="Salary"] {
+    justify-content: flex-end;
+    color: #27364b;
+    font-weight: 600;
+  }
+
+  .table td[data-label="Salary"]::before {
+    font-weight: 400;
+  }
+
+  .table td[data-label="Actions"] {
+    grid-column: 1 / -1;
+    border-top: 1px solid #f0f2f6;
+    padding-top: 9px;
+  }
+
+  .employee {
+    min-width: 0;
+  }
+
+  .actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .table tbody tr,
+  .actionButton {
+    transition: none;
+  }
+}

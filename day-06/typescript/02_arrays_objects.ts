@@ -12,4 +12,4 @@ let Employee : {
 };
 
 console.log(skills);
-console.log(employee);
+console.log(Employee);

@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { Building2, IndianRupee, Plus, Users } from "lucide-react";
+import EmployeeDrawer, {
+  type EmployeeFormErrors,
+} from "../components/EmployeeDrawer";
+import EmployeeTable from "../components/EmployeeTable";
+import EmployeeToolbar from "../components/EmployeeToolbar";
+import StatsCard from "../components/StatsCard";
 import "./employees.css";
 
 type Employee = {
@@ -13,6 +19,13 @@ type Employee = {
 };
 
 const API = "http://localhost:5000/api/employees";
+
+const emptyFormErrors: EmployeeFormErrors = {
+  name: "",
+  age: "",
+  department: "",
+  salary: "",
+};
 
 export default function EmployeesPage() {
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -32,6 +45,8 @@ export default function EmployeesPage() {
     department: "",
     salary: "",
   });
+  const [formErrors, setFormErrors] =
+    useState<EmployeeFormErrors>(emptyFormErrors);
 
   // =========================
   // GET EMPLOYEES
@@ -120,6 +135,7 @@ export default function EmployeesPage() {
 
   const openAdd = () => {
     setEditing(null);
+    setFormErrors({ ...emptyFormErrors });
 
     setForm({
       name: "",
@@ -137,6 +153,7 @@ export default function EmployeesPage() {
 
   const openEdit = (employee: Employee) => {
     setEditing(employee);
+    setFormErrors({ ...emptyFormErrors });
 
     setForm({
       name: employee.name,
@@ -152,16 +169,77 @@ export default function EmployeesPage() {
   // FORM SUBMIT
   // =========================
 
+  const validateField = (
+    field: keyof EmployeeFormErrors,
+    value: string,
+  ) => {
+    const trimmedValue = value.trim();
+
+    if (field === "name") {
+      return trimmedValue ? "" : "Employee name is required.";
+    }
+
+    if (field === "department") {
+      return trimmedValue ? "" : "Department is required.";
+    }
+
+    if (field === "age") {
+      if (!trimmedValue) {
+        return "Age is required.";
+      }
+
+      const age = Number(trimmedValue);
+      return Number.isFinite(age) &&
+        Number.isInteger(age) &&
+        age >= 18 &&
+        age <= 65
+        ? ""
+        : "Age must be between 18 and 65.";
+    }
+
+    if (!trimmedValue) {
+      return "Salary must be greater than 0.";
+    }
+
+    const salary = Number(trimmedValue);
+    return Number.isFinite(salary) && salary > 0
+      ? ""
+      : "Salary must be greater than 0.";
+  };
+
+  const validateForm = () => ({
+    name: validateField("name", form.name),
+    age: validateField("age", form.age),
+    department: validateField("department", form.department),
+    salary: validateField("salary", form.salary),
+  });
+
+  const handleFieldChange = (
+    field: keyof EmployeeFormErrors,
+    value: string,
+  ) => {
+    setForm((currentForm) => ({ ...currentForm, [field]: value }));
+    setFormErrors((currentErrors) =>
+      currentErrors[field]
+        ? { ...currentErrors, [field]: validateField(field, value) }
+        : currentErrors,
+    );
+  };
+
+  const handleFieldBlur = (field: keyof EmployeeFormErrors) => {
+    setFormErrors((currentErrors) => ({
+      ...currentErrors,
+      [field]: validateField(field, form[field]),
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (
-      !form.name.trim() ||
-      !form.age ||
-      !form.department.trim() ||
-      !form.salary
-    ) {
-      alert("Please fill all fields");
+    const validationErrors = validateForm();
+    setFormErrors(validationErrors);
+
+    if (Object.values(validationErrors).some(Boolean)) {
       return;
     }
 
@@ -195,6 +273,7 @@ export default function EmployeesPage() {
 
       setShowForm(false);
       setEditing(null);
+      setFormErrors({ ...emptyFormErrors });
 
       setForm({
         name: "",
@@ -233,6 +312,12 @@ export default function EmployeesPage() {
     }
   };
 
+  const closeForm = () => {
+    setShowForm(false);
+    setEditing(null);
+    setFormErrors({ ...emptyFormErrors });
+  };
+
   // =========================
   // LOADING
   // =========================
@@ -267,268 +352,72 @@ export default function EmployeesPage() {
         <button
           className="add-btn"
           onClick={openAdd}
+          type="button"
         >
-          + Add Employee
+          <Plus aria-hidden="true" size={16} />
+          Add Employee
         </button>
       </header>
 
       {/* STATISTICS */}
 
-      <section className="stats">
-
-        <div className="stat-card">
-          <span>Total Employees</span>
-          <strong>{employees.length}</strong>
-        </div>
-
-        <div className="stat-card">
-          <span>Average Salary</span>
-
-          <strong>
-            ₹{averageSalary.toLocaleString()}
-          </strong>
-        </div>
-
-        <div className="stat-card">
-          <span>Departments</span>
-
-          <strong>
-            {departments.length - 1}
-          </strong>
-        </div>
-
+      <section aria-label="Employee statistics" className="stats">
+        <StatsCard
+          title="Total Employees"
+          value={employees.length}
+          icon={<Users size={19} />}
+          supportingText="Across your organization"
+        />
+        <StatsCard
+          title="Average Salary"
+          value={`₹${averageSalary.toLocaleString()}`}
+          icon={<IndianRupee size={19} />}
+          supportingText="Average per employee"
+        />
+        <StatsCard
+          title="Departments"
+          value={departments.length - 1}
+          icon={<Building2 size={19} />}
+          supportingText="Represented in your team"
+        />
       </section>
 
       {/* CONTROLS */}
 
-      <section className="controls">
-
-        <input
-          type="text"
-          placeholder="Search employee..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        <select
-          value={department}
-          onChange={(e) => setDepartment(e.target.value)}
-        >
-          {departments.map((dept) => (
-            <option
-              key={dept}
-              value={dept}
-            >
-              {dept === "All"
-                ? "All Departments"
-                : dept}
-            </option>
-          ))}
-        </select>
-
-        <select
-          value={sort}
-          onChange={(e) => setSort(e.target.value)}
-        >
-          <option value="none">
-            Sort by Salary
-          </option>
-
-          <option value="low">
-            Salary: Low to High
-          </option>
-
-          <option value="high">
-            Salary: High to Low
-          </option>
-        </select>
-
-      </section>
+      <EmployeeToolbar
+        search={search}
+        setSearch={setSearch}
+        department={department}
+        setDepartment={setDepartment}
+        departments={departments}
+        sort={sort}
+        setSort={setSort}
+        filteredCount={filtered.length}
+        totalCount={employees.length}
+      />
 
       {/* EMPLOYEE LIST */}
 
-      <section className="employee-grid">
-
-        {filtered.length === 0 ? (
-          <div className="empty">
-            No employees found.
-          </div>
-        ) : (
-          filtered.map((employee) => (
-
-            <article
-              className="employee-card"
-              key={employee.id}
-            >
-
-              {/* EMPLOYEE INFO */}
-
-              <div className="employee-info">
-
-                <div className="avatar">
-                  {employee.name.charAt(0).toUpperCase()}
-                </div>
-
-                <div>
-                  <h2>{employee.name}</h2>
-                  <p>{employee.department}</p>
-                </div>
-
-              </div>
-
-              {/* DETAILS */}
-
-              <div className="details">
-
-                <span>
-                  Age: {employee.age}
-                </span>
-
-                <strong>
-                  ₹{employee.salary.toLocaleString()}
-                </strong>
-
-              </div>
-
-              {/* ACTIONS */}
-
-              <div className="actions">
-
-                <Link
-                  href={`/employees/${employee.id}`}
-                >
-                  <button className="view-btn">
-                    View
-                  </button>
-                </Link>
-
-                <button
-                  className="edit-btn"
-                  onClick={() => openEdit(employee)}
-                >
-                  Edit
-                </button>
-
-                <button
-                  className="delete-btn"
-                  onClick={() =>
-                    deleteEmployee(employee.id)
-                  }
-                >
-                  Delete
-                </button>
-
-              </div>
-
-            </article>
-
-          ))
-        )}
-
+      <section aria-label="Employees">
+        <EmployeeTable
+          employees={filtered}
+          onEdit={openEdit}
+          onDelete={deleteEmployee}
+        />
       </section>
 
       {/* ADD / EDIT MODAL */}
 
-      {showForm && (
-
-        <div className="modal-overlay">
-
-          <form
-            className="modal"
-            onSubmit={handleSubmit}
-          >
-
-            <h2>
-              {editing
-                ? "Edit Employee"
-                : "Add Employee"}
-            </h2>
-
-            {/* NAME */}
-
-            <input
-              type="text"
-              placeholder="Employee name"
-              value={form.name}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  name: e.target.value,
-                })
-              }
-            />
-
-            {/* AGE */}
-
-            <input
-              type="number"
-              placeholder="Age"
-              value={form.age}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  age: e.target.value,
-                })
-              }
-            />
-
-            {/* DEPARTMENT */}
-
-            <input
-              type="text"
-              placeholder="Department"
-              value={form.department}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  department: e.target.value,
-                })
-              }
-            />
-
-            {/* SALARY */}
-
-            <input
-              type="number"
-              placeholder="Salary"
-              value={form.salary}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  salary: e.target.value,
-                })
-              }
-            />
-
-            {/* MODAL ACTIONS */}
-
-            <div className="modal-actions">
-
-              <button
-                type="button"
-                className="cancel-btn"
-                onClick={() => {
-                  setShowForm(false);
-                  setEditing(null);
-                }}
-              >
-                Cancel
-              </button>
-
-              <button
-                type="submit"
-                className="save-btn"
-              >
-                {editing ? "Update" : "Add"}
-              </button>
-
-            </div>
-
-          </form>
-
-        </div>
-
-      )}
+      <EmployeeDrawer
+        open={showForm}
+        editing={editing}
+        form={form}
+        errors={formErrors}
+        onFieldChange={handleFieldChange}
+        onFieldBlur={handleFieldBlur}
+        onSubmit={handleSubmit}
+        onClose={closeForm}
+      />
 
     </main>
   );

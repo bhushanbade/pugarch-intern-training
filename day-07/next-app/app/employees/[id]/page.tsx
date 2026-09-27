@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import styles from "./employee-details.module.css";
 
 type Employee = {
   id: number;
@@ -29,38 +31,63 @@ export default function EmployeeDetails() {
   }, [params.id]);
 
   if (loading) {
-    return <main style={{ padding: 40 }}>Loading...</main>;
+    return <main className={styles.loading}>Loading...</main>;
   }
 
   if (!employee) {
-    return <main style={{ padding: 40 }}>Employee not found.</main>;
+    return <main className={styles.notFound}>Employee not found.</main>;
   }
 
   return (
-    <main style={{ maxWidth: 600, margin: "50px auto", padding: 30 }}>
+    <main className={styles.page}>
+      <header className={styles.topbar}>
+        <div>
+          <p className={styles.eyebrow}>Employee directory</p>
+          <h1 className={styles.pageTitle}>Employee details</h1>
+        </div>
+        <button
+          className={styles.backButton}
+          onClick={() => router.back()}
+          type="button"
+        >
+          <ArrowLeft aria-hidden="true" size={16} />
+          Back
+        </button>
+      </header>
 
-      <button onClick={() => router.back()}>
-        ← Back
-      </button>
+      <section aria-label="Employee profile" className={styles.profileCard}>
+        <div aria-hidden="true" className={styles.avatar}>
+          {employee.name.charAt(0).toUpperCase()}
+        </div>
+        <div>
+          <h2 className={styles.name}>{employee.name}</h2>
+          <span className={styles.department}>{employee.department}</span>
+        </div>
+      </section>
 
-      <h1>{employee.name}</h1>
-
-      <p>
-        <strong>Employee ID:</strong> {employee.id}
-      </p>
-
-      <p>
-        <strong>Age:</strong> {employee.age}
-      </p>
-
-      <p>
-        <strong>Department:</strong> {employee.department}
-      </p>
-
-      <p>
-        <strong>Salary:</strong> ₹{employee.salary.toLocaleString()}
-      </p>
-
+      <section aria-labelledby="employee-information" className={styles.detailsCard}>
+        <h2 className={styles.detailsTitle} id="employee-information">
+          Employee information
+        </h2>
+        <div className={styles.detailRow}>
+          <span className={styles.detailLabel}>Employee ID</span>
+          <span className={styles.detailValue}>{employee.id}</span>
+        </div>
+        <div className={styles.detailRow}>
+          <span className={styles.detailLabel}>Age</span>
+          <span className={styles.detailValue}>{employee.age}</span>
+        </div>
+        <div className={styles.detailRow}>
+          <span className={styles.detailLabel}>Department</span>
+          <span className={styles.detailValue}>{employee.department}</span>
+        </div>
+        <div className={styles.detailRow}>
+          <span className={styles.detailLabel}>Salary</span>
+          <span className={styles.detailValue}>
+            ₹{employee.salary.toLocaleString()}
+          </span>
+        </div>
+      </section>
     </main>
   );
 }

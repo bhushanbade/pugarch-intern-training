@@ -1,0 +1,255 @@
+.overlay {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: flex;
+  justify-content: flex-end;
+  background: rgb(16 24 40 / 42%);
+  animation: fadeIn 160ms ease-out;
+}
+
+.drawer {
+  display: flex;
+  width: min(460px, 100%);
+  height: 100%;
+  flex-direction: column;
+  overflow-y: auto;
+  background: #fff;
+  box-shadow: -12px 0 36px rgb(16 24 40 / 12%);
+  animation: slideIn 190ms ease-out;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid #edf0f5;
+  padding: 28px 28px 23px;
+}
+
+.eyebrow {
+  margin: 0 0 9px;
+  color: #5b49b7;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.15px;
+}
+
+.header h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.45px;
+}
+
+.description {
+  margin: 7px 0 0;
+  color: #667085;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.closeButton {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid #e8edf4;
+  border-radius: 9px;
+  background: #fff;
+  color: #667085;
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease,
+    border-color 140ms ease;
+}
+
+.closeButton:hover {
+  border-color: #dce4f0;
+  background: #f8f9fb;
+  color: #344054;
+}
+
+.form {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.fields {
+  display: grid;
+  gap: 21px;
+  padding: 27px 28px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  color: #344054;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.field input {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #dfe5ed;
+  border-radius: 8px;
+  outline: none;
+  background: #fff;
+  padding: 0 12px;
+  color: #27364b;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.field input::placeholder {
+  color: #a0a9b8;
+}
+
+.field input:focus {
+  border-color: #9588d6;
+  box-shadow: 0 0 0 3px rgb(91 73 183 / 12%);
+}
+
+.field input[aria-invalid="true"] {
+  border-color: #d92d20;
+}
+
+.field input[aria-invalid="true"]:focus {
+  border-color: #d92d20;
+  box-shadow: 0 0 0 3px rgb(217 45 32 / 11%);
+}
+
+.fieldError {
+  color: #b42318;
+  font-size: 11px;
+  font-weight: 450;
+  line-height: 1.4;
+}
+
+.salaryInput {
+  position: relative;
+}
+
+.salaryInput > span {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  color: #667085;
+  font-size: 13px;
+  transform: translateY(-50%);
+}
+
+.salaryInput input {
+  padding-left: 29px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: auto;
+  border-top: 1px solid #edf0f5;
+  padding: 18px 28px;
+}
+
+.cancelButton,
+.submitButton {
+  min-height: 40px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 0 15px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background-color 140ms ease, border-color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.cancelButton {
+  border-color: #e1e6ee;
+  background: #fff;
+  color: #475467;
+}
+
+.cancelButton:hover {
+  border-color: #cfd6e1;
+  background: #f8f9fb;
+}
+
+.submitButton {
+  background: #5b49b7;
+  color: #fff;
+  box-shadow: 0 2px 4px rgb(91 73 183 / 19%);
+}
+
+.submitButton:hover {
+  background: #49389e;
+}
+
+.closeButton:focus-visible,
+.cancelButton:focus-visible,
+.submitButton:focus-visible {
+  outline: 2px solid #5b49b7;
+  outline-offset: 2px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(24px);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 540px) {
+  .drawer {
+    width: 100%;
+  }
+
+  .header {
+    padding: 22px 20px 19px;
+  }
+
+  .fields {
+    gap: 19px;
+    padding: 23px 20px;
+  }
+
+  .actions {
+    padding: 15px 20px max(15px, env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .drawer {
+    animation: none;
+  }
+
+  .closeButton,
+  .field input,
+  .cancelButton,
+  .submitButton {
+    transition: none;
+  }
+}
