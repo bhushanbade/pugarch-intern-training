@@ -1,0 +1,68 @@
+<div class="app-page">
+  <main class="page">
+    <header class="header">
+      <div>
+        <p class="eyebrow">FACILITYOPS · ANGULAR MODULE</p>
+        <h1>Facility Inspection</h1>
+        <p class="subtitle">Inspection activity loaded from the shared FacilityOps REST API.</p>
+      </div>
+      <button class="refresh" (click)="load()" type="button">Refresh</button>
+    </header>
+
+    <section class="panel">
+      <div class="toolbar">
+        <div>
+          <h2>Inspection records</h2>
+          <p>Facility, inspection date, inspector, and status.</p>
+        </div>
+        <label>
+          Filter status
+          <select [(ngModel)]="statusFilter" name="statusFilter">
+            <option value="all">All statuses</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="completed">Completed</option>
+            <option value="failed">Failed</option>
+          </select>
+        </label>
+      </div>
+
+      @if (loading) {
+        <p aria-live="polite" class="state">Loading inspections from the API…</p>
+      } @else if (error) {
+        <div class="error" role="alert">
+          <strong>Inspection data is unavailable.</strong>
+          <p>{{ error }}</p>
+          <button class="refresh" (click)="load()" type="button">Try again</button>
+        </div>
+      } @else {
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th scope="col">Facility</th><th scope="col">Inspection date</th><th scope="col">Inspector</th><th scope="col">Status</th><th scope="col">Rating</th></tr>
+            </thead>
+            <tbody>
+              @for (inspection of visibleInspections; track inspection.id) {
+                <tr>
+                  <td><strong>{{ inspection.facility_name }}</strong></td>
+                  <td>{{ inspection.inspected_at | date:'medium' }}</td>
+                  <td>{{ inspection.inspector_name || 'Unassigned' }}</td>
+                  <td><span class="badge" [ngClass]="'status-' + inspection.status">{{ inspection.status.replace('_', ' ') }}</span></td>
+                  <td>{{ inspection.rating === null ? '—' : inspection.rating + ' / 5' }}</td>
+                </tr>
+              } @empty {
+                <tr><td class="empty" colspan="5">No inspections match this status.</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <p class="count">Showing {{ visibleInspections.length }} of {{ inspections.length }} inspection records</p>
+      }
+    </section>
+  </main>
+
+  <footer aria-label="Project information" class="app-footer">
+    <div class="footer-brand"><strong>FacilityOps</strong><span>: Smart Facility Management</span></div>
+    <div class="footer-credit">Project developed by <strong>Bhushan Kailas Bade</strong> <span>(PugArch intern)</span></div>
+    <div class="footer-copyright">© FacilityOps</div>
+  </footer>
+</div>
