@@ -42,8 +42,15 @@ export const deleteRecord = async (resource: ResourceName, id: number): Promise<
   await api.delete(`/${resource}/${id}`);
 };
 
-export const getDashboardStats = async (): Promise<DashboardStats> =>
-  (await api.get<{ data: DashboardStats }>('/dashboard/stats')).data.data;
+export const getDashboardStats = async (): Promise<DashboardStats> => {
+  try {
+    const res = await api.get<{ data: DashboardStats }>('/dashboard/stats');
+    return res.data.data;
+  } catch {
+    const res = await api.get<{ data: DashboardStats }>('/dashboard');
+    return res.data.data;
+  }
+};
 export const getPerformance = async (): Promise<FacilityPerformance[]> =>
   (await api.get<{ data: FacilityPerformance[] }>('/performance')).data.data;
 export const getDepartments = async (): Promise<Department[]> =>

@@ -56,7 +56,7 @@ export default async function handler(req, res) {
   }
 
   // 1. Dashboard Stats
-  if (segments[0] === 'dashboard') {
+  if (segments[0] === 'dashboard' || segments[0] === 'stats') {
     return sendJson(res, 200, { data: getStats() });
   }
 
